@@ -4,11 +4,13 @@ import Notiflix from 'notiflix';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import SimpleLightbox from 'simplelightbox';
 import debounce from './modules/debounce';
+import { throttle } from 'lodash';
 
 const refs = {
   formSubmit: document.querySelector('#search-form'),
   input: document.querySelector('[name="searchQuery"]'),
   gallery: document.querySelector('.gallery'),
+  // btnMore: document.querySelector('.more'),
 };
 const API = new ApiService();
 const lightBox = new SimpleLightbox('.gallery a', {
@@ -18,37 +20,40 @@ const lightBox = new SimpleLightbox('.gallery a', {
 });
 let stopScroll = false;
 
-window.addEventListener('scroll', () => {
-  if (
-    window.scrollY + window.innerHeight >=
-      document.documentElement.scrollHeight &&
-    !stopScroll
-  ) {
-    debounce(onGetMore(), 1500);
-  }
-});
+window.addEventListener(
+  'scroll',
+  throttle(() => {
+    if (
+      window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight &&
+      !stopScroll
+    ) {
+      onGetMore();
+    }
+  }, 300)
+);
 
 refs.formSubmit.addEventListener('submit', onSubmit);
+// refs.btnMore.addEventListener('click', onGetMore);
 
-function onSubmit(e) {
+async function onSubmit(e) {
   e.preventDefault();
   API.resetPage();
   stopScroll = false;
-  getData(1);
-  totalCount();
+  await getData(1);
+  await totalCount();
 }
+
 async function getData(check) {
   try {
     API.query = refs.input.value.trim();
     const data = await API.onFetch();
-    if (!data.hits.length) {
-      errorNotFound();
-    }
+    if (!data.hits.length) errorNotFound();
 
     if (check === 1) {
-      renderFirst(data.hits);
+      await renderFirst(data.hits);
     } else {
-      renderMore(data.hits);
+      await renderMore(data.hits);
     }
     checkEndOfResult(data);
   } catch (error) {
