@@ -23,7 +23,7 @@ window.addEventListener(
   'scroll',
   throttle(() => {
     if (
-      window.scrollY + window.innerHeight >=
+      window.pageYOffset + window.innerHeight >=
         document.documentElement.scrollHeight &&
       !stopScroll
     ) {
@@ -70,11 +70,12 @@ async function getData(check) {
 async function renderMore(res) {
   let markup = await ImgCard(res);
   refs.gallery.insertAdjacentHTML('beforeend', markup);
-  lightBox.refresh();
   smoothScrollPage();
+  lightBox.refresh();
 }
 
 async function renderFirst(res) {
+  if (res.length < 40 && res.length > 0) stopScroll = true;
   let markup = await ImgCard(res);
   refs.gallery.innerHTML = markup;
   lightBox.refresh();
@@ -104,10 +105,9 @@ async function totalCount() {
     Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
   }
 }
-
 function smoothScrollPage() {
   const { height: cardHeight } =
-    refs.gallery.firstElementChild.getBoundingClientRect();
+    refs.gallery.lastElementChild.getBoundingClientRect();
   window.scrollBy({
     top: cardHeight * 2,
     behavior: 'smooth',
