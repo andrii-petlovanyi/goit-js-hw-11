@@ -38,9 +38,6 @@ window.addEventListener(
             document.body.parentNode
           ).scrollTop
         : window.pageYOffset;
-    console.log('window.innerHeight', window.innerHeight);
-    console.log('pageYOffset: ', pageOffY);
-    console.log('scrlHeight: ', scrollHeight);
     if (pageYOffset + window.innerHeight + 20 >= scrollHeight && !stopScroll) {
       onGetMore();
     }
