@@ -22,9 +22,16 @@ let stopScroll = false;
 window.addEventListener(
   'scroll',
   throttle(() => {
+    let scrollHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight,
+      document.body.clientHeight,
+      document.documentElement.clientHeight
+    );
     if (
-      window.pageYOffset + window.innerHeight >=
-        document.documentElement.scrollHeight &&
+      window.pageYOffset + window.innerHeight >= scrollHeight &&
       !stopScroll
     ) {
       onGetMore();
