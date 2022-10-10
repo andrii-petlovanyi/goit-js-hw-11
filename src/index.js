@@ -10,7 +10,6 @@ const refs = {
   input: document.querySelector('[name="searchQuery"]'),
   gallery: document.querySelector('.gallery'),
   topBtn: document.querySelector('.top-btn'),
-  // btnMore: document.querySelector('.more'),
 };
 const API = new ApiService();
 const lightBox = new SimpleLightbox('.gallery a', {
@@ -30,7 +29,7 @@ window.addEventListener(
     ) {
       onGetMore();
     }
-  }, 300)
+  }, 500)
 );
 window.onscroll = function () {
   scrollFunction();
@@ -38,7 +37,6 @@ window.onscroll = function () {
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.topBtn.addEventListener('click', goToTOp);
-// refs.btnMore.addEventListener('click', onGetMore);
 
 async function onSubmit(e) {
   e.preventDefault();
@@ -59,12 +57,14 @@ async function getData(check) {
     if (check === 1) {
       await renderFirst(data.hits);
       await totalCount();
+      console.log(data);
     } else {
+      isEndList(data);
       await renderMore(data.hits);
     }
-    checkEndOfResult(data);
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
+    if (error === undefined) alert('Stoooop');
   }
 }
 async function renderMore(res) {
@@ -86,25 +86,22 @@ function errorNotFound() {
   );
 }
 
-function onGetMore() {
+async function onGetMore() {
+  let loadedPage = API.page;
+  console.log(API.page);
   API.incrementPage();
-  getData();
+  if (loadedPage !== API.page - 1) {
+    API.page = loadedPage;
+    return;
+  }
+
+  await getData();
 }
 
 async function totalCount() {
   const data = await API.onFetch();
   if (data.hits.length) {
-    Notiflix.Notify.info(`Hooray! We found ${data.total} images.`);
-  }
-}
-
-function checkEndOfResult(data) {
-  if (data.hits.length < API.per_page && data.hits.length !== 0) {
-    stopScroll = true;
-    Notiflix.Notify.info(
-      'We`re sorry, but you`ve reached the end of search results.'
-    );
-    return;
+    Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
   }
 }
 
@@ -127,4 +124,16 @@ function scrollFunction() {
     document.body.scrollTop > 20 || document.documentElement.scrollTop > 20
       ? 'flex'
       : 'none';
+}
+
+function isEndList(data) {
+  let currentPage = API.page;
+  let totalPage = Math.ceil(data.totalHits / 40);
+  if (totalPage === currentPage) {
+    stopScroll = true;
+    return Notiflix.Notify.info(
+      'We`re sorry, but you`ve reached the end of search results.',
+      { zindex: 3 }
+    );
+  }
 }

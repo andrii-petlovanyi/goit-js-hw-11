@@ -24,10 +24,9 @@ export default class ApiService {
           per_page: this.per_page,
         },
       });
-
       return await resp.data;
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   }
 
