@@ -8,22 +8,33 @@
     <script type="module" src="./index.js"></script>
   </head>
   <body>
-    <header>
+    <header class="header">
       <form class="search-form" id="search-form">
-        <input
-          type="text"
-          name="searchQuery"
-          autocomplete="off"
-          placeholder="Search images..."
-        />
-        <button type="submit">Search</button>
+        <label class="search__label">
+          <input
+            type="text"
+            name="searchQuery"
+            autocomplete="off"
+            placeholder="Search images..."
+          />
+          <button class="submit" type="submit">
+            <svg class="submit__icon" width="24" height="24">
+              <use href="./images/sprite.svg#icon-search"></use>
+            </svg>
+          </button>
+        </label>
       </form>
     </header>
-    <main>
+    <main class="main">
       <div class="gallery container" id="scroll">
         <!-- Картки зображень -->
       </div>
       <!-- <button class="more">=></button> -->
     </main>
+    <button class="top-btn" title="Go to top">
+      <svg class="top-btn__icon" width="24" height="24">
+        <use href="./images/sprite.svg#icon-top"></use>
+      </svg>
+    </button>
   </body>
 </html>

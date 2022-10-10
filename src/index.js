@@ -3,13 +3,13 @@ import ImgCard from './templates/imgCard.hbs';
 import Notiflix from 'notiflix';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import SimpleLightbox from 'simplelightbox';
-import debounce from './modules/debounce';
-import { throttle } from 'lodash';
+import throttle from './modules/throttle';
 
 const refs = {
   formSubmit: document.querySelector('#search-form'),
   input: document.querySelector('[name="searchQuery"]'),
   gallery: document.querySelector('.gallery'),
+  topBtn: document.querySelector('.top-btn'),
   // btnMore: document.querySelector('.more'),
 };
 const API = new ApiService();
@@ -18,8 +18,8 @@ const lightBox = new SimpleLightbox('.gallery a', {
   enableKeyboard: true,
   docClose: true,
 });
-let stopScroll = false;
 
+let stopScroll = false;
 window.addEventListener(
   'scroll',
   throttle(() => {
@@ -32,26 +32,33 @@ window.addEventListener(
     }
   }, 300)
 );
+window.onscroll = function () {
+  scrollFunction();
+};
 
 refs.formSubmit.addEventListener('submit', onSubmit);
+refs.topBtn.addEventListener('click', goToTOp);
 // refs.btnMore.addEventListener('click', onGetMore);
 
 async function onSubmit(e) {
   e.preventDefault();
+  goToTOp();
   API.resetPage();
   stopScroll = false;
   await getData(1);
-  await totalCount();
 }
 
 async function getData(check) {
   try {
-    API.query = refs.input.value.trim();
+    let searchData = refs.input.value.trim();
+    if (!searchData.length) return;
+    API.query = searchData;
     const data = await API.onFetch();
-    if (!data.hits.length) errorNotFound();
+    if (!data.hits.length) return errorNotFound();
 
     if (check === 1) {
       await renderFirst(data.hits);
+      await totalCount();
     } else {
       await renderMore(data.hits);
     }
@@ -73,6 +80,7 @@ async function renderFirst(res) {
   lightBox.refresh();
 }
 function errorNotFound() {
+  refs.gallery.innerHTML = '';
   Notiflix.Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
   );
@@ -107,4 +115,16 @@ function smoothScrollPage() {
     top: cardHeight * 2,
     behavior: 'smooth',
   });
+}
+
+function goToTOp() {
+  document.body.scrollTop = 0; // Safari
+  document.documentElement.scrollTop = 0; // Chrome, Firefox, IE and Opera
+}
+
+function scrollFunction() {
+  refs.topBtn.style.display =
+    document.body.scrollTop > 20 || document.documentElement.scrollTop > 20
+      ? 'flex'
+      : 'none';
 }
