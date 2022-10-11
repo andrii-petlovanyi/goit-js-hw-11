@@ -69,7 +69,6 @@ async function getData(check) {
     if (check === 1) {
       await renderFirst(data.hits);
       await totalCount();
-      console.log(data);
     } else {
       isEndList(data);
       await renderMore(data.hits);
@@ -101,7 +100,6 @@ function errorNotFound() {
 
 async function onGetMore() {
   let loadedPage = API.page;
-  console.log(API.page);
   API.incrementPage();
   if (loadedPage !== API.page - 1) {
     API.page = loadedPage;
@@ -144,8 +142,7 @@ function isEndList(data) {
   if (totalPage === currentPage) {
     stopScroll = true;
     return Notiflix.Notify.info(
-      'We`re sorry, but you`ve reached the end of search results.',
-      { zindex: 3 }
+      'We`re sorry, but you`ve reached the end of search results.'
     );
   }
 }
