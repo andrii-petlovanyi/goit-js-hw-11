@@ -75,7 +75,6 @@ async function getData(check) {
     }
   } catch (error) {
     console.log(error);
-    if (error === undefined) alert('Stoooop');
   }
 }
 async function renderMore(res) {
