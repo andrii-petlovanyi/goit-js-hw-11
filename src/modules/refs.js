@@ -1,4 +1,4 @@
-export const refs = {
+export default refs = {
   formSubmit: document.querySelector('#search-form'),
   input: document.querySelector('[name="searchQuery"]'),
   gallery: document.querySelector('.gallery'),
