@@ -1,11 +1,7 @@
 import ApiService from './api/fetchSearchApi';
 import Refs from './modules/refs';
 import throttle from './modules/throttle';
-import {
-  smoothScrollPage,
-  goToTop,
-  scrollFunction,
-} from './modules/scrollToTop';
+import { smoothScrollPage, goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
 import ImgCard from './templates/imgCard.hbs';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -23,7 +19,7 @@ export const stopScroll = {
 };
 
 window.addEventListener('scroll', throttle(checkHighAutoScroll, 500));
-window.onscroll = scrollFunction;
+window.onscroll = toTopBtnShow;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.topBtn.addEventListener('click', goToTop);

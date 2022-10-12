@@ -14,7 +14,7 @@ export function goToTop() {
   document.documentElement.scrollTop = 0; // Chrome, Firefox, IE and Opera
 }
 
-export function scrollFunction() {
+export function toTopBtnShow() {
   refs.topBtn.style.display =
     document.body.scrollTop > 20 || document.documentElement.scrollTop > 20
       ? 'flex'
