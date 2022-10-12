@@ -10,8 +10,8 @@ export function smoothScrollPage() {
 }
 
 export function goToTop() {
-  document.body.scrollTop = 0; // Safari
-  document.documentElement.scrollTop = 0; // Chrome, Firefox, IE and Opera
+  document.body.scrollTop = 0; // for Safari
+  document.documentElement.scrollTop = 0; // for Chrome, Firefox, IE and Opera
 }
 
 export function toTopBtnShow() {
