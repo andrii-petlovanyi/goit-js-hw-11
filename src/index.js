@@ -1,51 +1,29 @@
 import ApiService from './api/fetchSearchApi';
+import Refs from './modules/refs';
+import throttle from './modules/throttle';
+import {
+  smoothScrollPage,
+  goToTOp,
+  scrollFunction,
+} from './modules/scrollToTop';
+import { errorNotFound, totalCount, isEndList } from './modules/notification';
 import ImgCard from './templates/imgCard.hbs';
-import Notiflix from 'notiflix';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import SimpleLightbox from 'simplelightbox';
-import throttle from './modules/throttle';
 
-const refs = {
-  formSubmit: document.querySelector('#search-form'),
-  input: document.querySelector('[name="searchQuery"]'),
-  gallery: document.querySelector('.gallery'),
-  topBtn: document.querySelector('.top-btn'),
-};
-const API = new ApiService();
+export const refs = Refs;
+export const API = new ApiService();
 const lightBox = new SimpleLightbox('.gallery a', {
   loop: true,
   enableKeyboard: true,
   docClose: true,
 });
-
-let stopScroll = false;
-window.addEventListener(
-  'scroll',
-  throttle(() => {
-    let scrollHeight = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.body.clientHeight,
-      document.documentElement.clientHeight
-    );
-    let pageYOffset =
-      window.pageYOffset == undefined
-        ? (
-            document.body ||
-            document.documentElement ||
-            document.body.parentNode
-          ).scrollTop
-        : window.pageYOffset;
-    if (pageYOffset + window.innerHeight + 20 >= scrollHeight && !stopScroll) {
-      onGetMore();
-    }
-  }, 500)
-);
-window.onscroll = function () {
-  scrollFunction();
+export const stopScroll = {
+  isTrue: false,
 };
+
+window.addEventListener('scroll', throttle(checkHighAutoScroll, 500));
+window.onscroll = scrollFunction;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.topBtn.addEventListener('click', goToTOp);
@@ -54,7 +32,7 @@ async function onSubmit(e) {
   e.preventDefault();
   goToTOp();
   API.resetPage();
-  stopScroll = false;
+  stopScroll.isTrue = false;
   await getData(1);
 }
 
@@ -70,7 +48,7 @@ async function getData(check) {
       await renderFirst(data.hits);
       await totalCount();
     } else {
-      isEndList(data);
+      await isEndList(data);
       await renderMore(data.hits);
     }
   } catch (error) {
@@ -85,19 +63,13 @@ async function renderMore(res) {
 }
 
 async function renderFirst(res) {
-  if (res.length < 40 && res.length > 0) stopScroll = true;
+  if (res.length < 40 && res.length > 0) stopScroll.isTrue = true;
   let markup = await ImgCard(res);
   refs.gallery.innerHTML = markup;
   lightBox.refresh();
 }
-function errorNotFound() {
-  refs.gallery.innerHTML = '';
-  Notiflix.Notify.failure(
-    'Sorry, there are no images matching your search query. Please try again.'
-  );
-}
 
-async function onGetMore() {
+export async function onGetMore() {
   let loadedPage = API.page;
   API.incrementPage();
   if (loadedPage !== API.page - 1) {
@@ -108,40 +80,24 @@ async function onGetMore() {
   await getData();
 }
 
-async function totalCount() {
-  const data = await API.onFetch();
-  if (data.hits.length) {
-    Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
-  }
-}
-function smoothScrollPage() {
-  const { height: cardHeight } =
-    refs.gallery.lastElementChild.getBoundingClientRect();
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
-}
-
-function goToTOp() {
-  document.body.scrollTop = 0; // Safari
-  document.documentElement.scrollTop = 0; // Chrome, Firefox, IE and Opera
-}
-
-function scrollFunction() {
-  refs.topBtn.style.display =
-    document.body.scrollTop > 20 || document.documentElement.scrollTop > 20
-      ? 'flex'
-      : 'none';
-}
-
-function isEndList(data) {
-  let currentPage = API.page;
-  let totalPage = Math.ceil(data.totalHits / 40);
-  if (totalPage === currentPage) {
-    stopScroll = true;
-    return Notiflix.Notify.info(
-      'We`re sorry, but you`ve reached the end of search results.'
-    );
+function checkHighAutoScroll() {
+  let scrollHeight = Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.offsetHeight,
+    document.body.clientHeight,
+    document.documentElement.clientHeight
+  );
+  let pageYOffset =
+    window.pageYOffset == undefined
+      ? (document.body || document.documentElement || document.body.parentNode)
+          .scrollTop
+      : window.pageYOffset;
+  if (
+    pageYOffset + window.innerHeight + 20 >= scrollHeight &&
+    !stopScroll.isTrue
+  ) {
+    onGetMore();
   }
 }
