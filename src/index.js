@@ -97,10 +97,10 @@ async function checkHighAutoScroll() {
   ) {
     scrollCheker.isLoadMore = false;
     await onGetMore();
-    setTimeout(scrollDelayOff, 1000);
+    setTimeout(scrollOn, 1000);
   }
 }
 
-function scrollDelayOff() {
+function scrollOn() {
   scrollCheker.isLoadMore = true;
 }

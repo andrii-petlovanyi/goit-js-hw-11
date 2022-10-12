@@ -4,7 +4,7 @@ export function smoothScrollPage() {
   const { height: cardHeight } =
     refs.gallery.lastElementChild.getBoundingClientRect();
   window.scrollBy({
-    top: cardHeight * 2,
+    top: cardHeight * 3,
     behavior: 'smooth',
   });
 }
