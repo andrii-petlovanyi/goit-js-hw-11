@@ -7,6 +7,7 @@ import ImgCard from './templates/imgCard.hbs';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import SimpleLightbox from 'simplelightbox';
 
+const refs = refs;
 export const API = new ApiService();
 const lightBox = new SimpleLightbox('.gallery a', {
   loop: true,
