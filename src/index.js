@@ -13,8 +13,9 @@ const lightBox = new SimpleLightbox('.gallery a', {
   enableKeyboard: true,
   docClose: true,
 });
-export const stopScroll = {
-  isTrue: false,
+export const scrollCheker = {
+  isStopScroll: false,
+  isLoadMore: true,
 };
 
 window.addEventListener('scroll', throttle(checkHighAutoScroll, 500));
@@ -27,7 +28,7 @@ async function onSubmit(e) {
   e.preventDefault();
   goToTop();
   API.resetPage();
-  stopScroll.isTrue = false;
+  scrollCheker.isStopScroll = false;
   await getData(1);
 }
 
@@ -58,7 +59,7 @@ async function renderMore(res) {
 }
 
 async function renderFirst(res) {
-  if (res.length < 40 && res.length > 0) stopScroll.isTrue = true;
+  if (res.length < 40 && res.length > 0) scrollCheker.isStopScroll = true;
   let markup = await ImgCard(res);
   refs.gallery.innerHTML = markup;
   lightBox.refresh();
@@ -75,7 +76,7 @@ export async function onGetMore() {
   await getData();
 }
 
-function checkHighAutoScroll() {
+async function checkHighAutoScroll() {
   let scrollHeight = Math.max(
     document.body.scrollHeight,
     document.documentElement.scrollHeight,
@@ -91,8 +92,15 @@ function checkHighAutoScroll() {
       : window.pageYOffset;
   if (
     pageYOffset + window.innerHeight + 20 >= scrollHeight &&
-    !stopScroll.isTrue
+    !scrollCheker.isStopScroll &&
+    scrollCheker.isLoadMore
   ) {
-    onGetMore();
+    scrollCheker.isLoadMore = false;
+    await onGetMore();
+    setTimeout(scrollDelayOff, 1000);
   }
+}
+
+function scrollDelayOff() {
+  scrollCheker.isLoadMore = true;
 }

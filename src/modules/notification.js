@@ -1,5 +1,5 @@
 import Notiflix from 'notiflix';
-import { API, stopScroll } from '../index';
+import { API, scrollCheker } from '../index';
 import refs from './refs';
 
 export function errorNotFound() {
@@ -20,7 +20,7 @@ export async function isEndList(data) {
   let currentPage = API.page;
   let totalPage = Math.ceil((await data.totalHits) / 40);
   if (totalPage === currentPage) {
-    stopScroll.isTrue = true;
+    scrollCheker.isStopScroll = true;
     return Notiflix.Notify.info(
       'We`re sorry, but you`ve reached the end of search results.'
     );
