@@ -1,5 +1,6 @@
 import Notiflix from 'notiflix';
-import { API, stopScroll, refs } from '../index';
+import { API, stopScroll } from '../index';
+import refs from './refs';
 
 export function errorNotFound() {
   refs.gallery.innerHTML = '';
