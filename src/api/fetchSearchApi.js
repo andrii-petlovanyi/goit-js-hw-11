@@ -4,7 +4,7 @@ const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '30473687-5047ffac8f3617cf871b8e4a3';
 const IMAGES_PER_PAGE = 40;
 
-export default class ApiService {
+class ApiService {
   constructor() {
     this.searchQuery = '';
     this.page = 1;
@@ -46,3 +46,5 @@ export default class ApiService {
     this.searchQuery = newQuery;
   }
 }
+
+export default ApiService;
