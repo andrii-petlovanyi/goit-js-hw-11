@@ -1,4 +1,4 @@
-import refs from './refs';
+import refs from '../index';
 
 export function smoothScrollPage() {
   const { height: cardHeight } =

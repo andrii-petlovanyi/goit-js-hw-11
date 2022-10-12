@@ -1,5 +1,5 @@
 import ApiService from './api/fetchSearchApi';
-import Refs from './modules/refs';
+import refs from './modules/refs';
 import throttle from './modules/throttle';
 import { smoothScrollPage, goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
@@ -7,7 +7,7 @@ import ImgCard from './templates/imgCard.hbs';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import SimpleLightbox from 'simplelightbox';
 
-export const refs = Refs;
+export const refs = refs;
 export const API = new ApiService();
 const lightBox = new SimpleLightbox('.gallery a', {
   loop: true,
