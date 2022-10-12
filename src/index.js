@@ -3,7 +3,7 @@ import Refs from './modules/refs';
 import throttle from './modules/throttle';
 import {
   smoothScrollPage,
-  goToTOp,
+  goToTop,
   scrollFunction,
 } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
@@ -26,11 +26,11 @@ window.addEventListener('scroll', throttle(checkHighAutoScroll, 500));
 window.onscroll = scrollFunction;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
-refs.topBtn.addEventListener('click', goToTOp);
+refs.topBtn.addEventListener('click', goToTop);
 
 async function onSubmit(e) {
   e.preventDefault();
-  goToTOp();
+  goToTop();
   API.resetPage();
   stopScroll.isTrue = false;
   await getData(1);

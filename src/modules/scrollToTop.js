@@ -9,7 +9,7 @@ export function smoothScrollPage() {
   });
 }
 
-export function goToTOp() {
+export function goToTop() {
   document.body.scrollTop = 0; // Safari
   document.documentElement.scrollTop = 0; // Chrome, Firefox, IE and Opera
 }
