@@ -1,6 +1,5 @@
 import ApiService from './api/fetchSearchApi';
 import refs from './modules/refs';
-import throttle from './modules/throttle';
 import { smoothScrollPage, goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
 import ImgCard from './templates/imgCard.hbs';
@@ -15,10 +14,9 @@ const lightBox = new SimpleLightbox('.gallery a', {
 });
 export const scrollCheker = {
   isStopScroll: false,
-  isLoadMore: true,
+  idDelayScrollCheker: 0,
 };
 
-window.addEventListener('scroll', throttle(checkHighAutoScroll, 500));
 window.onscroll = toTopBtnShow;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
@@ -26,7 +24,7 @@ refs.topBtn.addEventListener('click', goToTop);
 
 async function onSubmit(e) {
   e.preventDefault();
-  goToTop();
+  refs.gallery.innerHTML = '';
   API.resetPage();
   scrollCheker.isStopScroll = false;
   await getData(1);
@@ -42,10 +40,12 @@ async function getData(check) {
 
     if (check === 1) {
       await renderFirst(data.hits);
-      await totalCount();
+      totalCount(data);
+      await checkHighAutoScroll();
     } else {
-      await isEndList(data);
+      isEndList(data);
       await renderMore(data.hits);
+      await checkHighAutoScroll();
     }
   } catch (error) {
     console.log(error);
@@ -61,7 +61,7 @@ async function renderMore(res) {
 async function renderFirst(res) {
   if (res.length < 40 && res.length > 0) scrollCheker.isStopScroll = true;
   let markup = await ImgCard(res);
-  refs.gallery.innerHTML = markup;
+  refs.gallery.innerHTML += markup;
   lightBox.refresh();
 }
 
@@ -91,16 +91,12 @@ async function checkHighAutoScroll() {
           .scrollTop
       : window.pageYOffset;
   if (
-    pageYOffset + window.innerHeight + 20 >= scrollHeight &&
-    !scrollCheker.isStopScroll &&
-    scrollCheker.isLoadMore
+    pageYOffset + window.innerHeight + 1 >= scrollHeight &&
+    !scrollCheker.isStopScroll
   ) {
-    scrollCheker.isLoadMore = false;
+    clearTimeout(scrollCheker.idDelayScrollCheker);
     await onGetMore();
-    setTimeout(scrollOn, 1000);
+  } else {
+    scrollCheker.idDelayScrollCheker = setTimeout(checkHighAutoScroll, 2000);
   }
-}
-
-function scrollOn() {
-  scrollCheker.isLoadMore = true;
 }

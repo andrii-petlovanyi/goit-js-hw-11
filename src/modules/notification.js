@@ -9,16 +9,15 @@ export function errorNotFound() {
   );
 }
 
-export async function totalCount() {
-  const data = await API.onFetch();
+export function totalCount(data) {
   if (data.hits.length) {
     Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
   }
 }
 
-export async function isEndList(data) {
+export function isEndList(data) {
   let currentPage = API.page;
-  let totalPage = Math.ceil((await data.totalHits) / 40);
+  let totalPage = Math.ceil(data.totalHits / 40);
   if (totalPage === currentPage) {
     scrollCheker.isStopScroll = true;
     return Notiflix.Notify.info(
