@@ -21,12 +21,15 @@ window.onscroll = toTopBtnShow;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.topBtn.addEventListener('click', goToTop);
+refs.input.addEventListener('focus', addHeaderTransform);
+refs.input.addEventListener('blur', removeHeaderTransform);
 
 async function onSubmit(e) {
   e.preventDefault();
   refs.gallery.innerHTML = '';
   API.resetPage();
   scrollCheker.isStopScroll = false;
+  clearTimeout(scrollCheker.idDelayScrollCheker);
   await getData(1);
 }
 
@@ -42,6 +45,9 @@ async function getData(check) {
       await renderFirst(data.hits);
       totalCount(data);
       await checkHighAutoScroll();
+
+      let abc = refs.gallery.lastElementChild.getBoundingClientRect();
+      console.log(abc);
     } else {
       isEndList(data);
       await renderMore(data.hits);
@@ -99,4 +105,11 @@ async function checkHighAutoScroll() {
   } else {
     scrollCheker.idDelayScrollCheker = setTimeout(checkHighAutoScroll, 2000);
   }
+}
+
+function addHeaderTransform() {
+  refs.header.classList.add('header--transform');
+}
+function removeHeaderTransform() {
+  refs.header.classList.remove('header--transform');
 }
