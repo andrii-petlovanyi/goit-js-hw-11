@@ -51,6 +51,7 @@ body {
   }
 
   & .search-form .submit__icon {
+    animation: none;
     transform: scale(1.15) rotate(360deg);
   }
 }
@@ -106,6 +107,7 @@ body {
 .search-form .submit__icon {
   fill: currentColor;
   transition: transform 300ms ease;
+  animation: shake 2s infinite;
 
   &:hover {
     transform: scale(1.15) rotate(15deg);
@@ -179,6 +181,21 @@ body {
 
 .top-btn .top-btn__icon {
   fill: currentColor;
+}
+
+@keyframes shake {
+  10% {
+    transform: scale(1.05) rotate(5deg);
+  }
+  20% {
+    transform: scale(1.05) rotate(-5deg);
+  }
+  30% {
+    transform: scale(1.05) rotate(5deg);
+  }
+  40% {
+    transform: none;
+  }
 }
 
 // === === === ===
