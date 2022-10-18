@@ -1,5 +1,6 @@
 import ApiService from './api/fetchSearchApi';
 import refs from './modules/refs';
+import { addHeaderTransform, removeHeaderTransform } from './modules/animation';
 import { smoothScrollPage, goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
 import ImgCard from './templates/imgCard.hbs';
@@ -21,6 +22,7 @@ window.onscroll = toTopBtnShow;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.topBtn.addEventListener('click', goToTop);
+
 refs.input.onfocus = addHeaderTransform;
 refs.input.onblur = removeHeaderTransform;
 
@@ -102,11 +104,4 @@ async function checkHighAutoScroll() {
   } else {
     scrollCheker.idDelayScrollCheker = setTimeout(checkHighAutoScroll, 2000);
   }
-}
-
-function addHeaderTransform() {
-  refs.header.classList.add('header--transform');
-}
-function removeHeaderTransform() {
-  refs.header.classList.remove('header--transform');
 }
