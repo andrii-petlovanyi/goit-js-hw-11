@@ -33,7 +33,7 @@ async function onSubmit(e) {
   await getData(1);
 }
 
-async function getData(check) {
+async function getData(check = 0) {
   try {
     let searchData = refs.input.value.trim();
     if (!searchData.length) return;
@@ -45,9 +45,6 @@ async function getData(check) {
       await renderFirst(data.hits);
       totalCount(data);
       await checkHighAutoScroll();
-
-      let abc = refs.gallery.lastElementChild.getBoundingClientRect();
-      console.log(abc);
     } else {
       isEndList(data);
       await renderMore(data.hits);
@@ -57,14 +54,14 @@ async function getData(check) {
     console.log(error);
   }
 }
-async function renderMore(res) {
+async function renderMore(res = {}) {
   let markup = await ImgCard(res);
   refs.gallery.insertAdjacentHTML('beforeend', markup);
   smoothScrollPage();
   lightBox.refresh();
 }
 
-async function renderFirst(res) {
+async function renderFirst(res = {}) {
   if (res.length < 40 && res.length > 0) scrollCheker.isStopScroll = true;
   let markup = await ImgCard(res);
   refs.gallery.innerHTML += markup;

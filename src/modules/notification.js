@@ -9,13 +9,13 @@ export function errorNotFound() {
   );
 }
 
-export function totalCount(data) {
+export function totalCount(data = {}) {
   if (data.hits.length) {
     Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
   }
 }
 
-export function isEndList(data) {
+export function isEndList(data = {}) {
   let currentPage = API.page;
   let totalPage = Math.ceil(data.totalHits / 40);
   if (totalPage === currentPage) {
