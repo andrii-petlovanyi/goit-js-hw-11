@@ -21,8 +21,8 @@ window.onscroll = toTopBtnShow;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.topBtn.addEventListener('click', goToTop);
-refs.input.addEventListener('focus', addHeaderTransform);
-refs.input.addEventListener('blur', removeHeaderTransform);
+refs.input.onfocus = addHeaderTransform;
+refs.input.onblur = removeHeaderTransform;
 
 async function onSubmit(e) {
   e.preventDefault();
