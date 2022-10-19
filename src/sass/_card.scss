@@ -56,6 +56,24 @@ body {
   }
 }
 
+.search__label {
+  &:hover input,
+  &:focus input {
+    width: 300px;
+  }
+
+  @media screen and (min-width: 480px) {
+    & input {
+      width: 250px;
+    }
+
+    &:focus input,
+    &:hover input {
+      width: 400px;
+    }
+  }
+}
+
 .search-form input {
   height: 44px;
   width: 190px;
@@ -72,11 +90,6 @@ body {
 
   &::placeholder {
     color: #2e2e2e;
-  }
-
-  &:focus {
-    width: 300px;
-    outline: 2px solid #2e2e2e;
   }
 
   @media screen and (min-width: 480px) {
@@ -109,8 +122,8 @@ body {
   transition: transform 300ms ease;
   animation: shake 2s infinite;
 
-  &:hover {
-    transform: scale(1.15) rotate(15deg);
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }

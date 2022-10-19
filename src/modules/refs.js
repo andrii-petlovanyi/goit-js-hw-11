@@ -4,6 +4,7 @@ const refs = {
   gallery: document.querySelector('.gallery'),
   topBtn: document.querySelector('.top-btn'),
   header: document.querySelector('.header'),
+  label: document.querySelector('.search__label'),
 };
 
 export default refs;
