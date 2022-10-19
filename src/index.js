@@ -1,6 +1,10 @@
 import ApiService from './api/fetchSearchApi';
 import refs from './modules/refs';
-import { addHeaderTransform, removeHeaderTransform } from './modules/animation';
+import {
+  addHeaderTransform,
+  removeHeaderTransform,
+  stopBlur,
+} from './modules/animation';
 import { smoothScrollPage, goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
 import ImgCard from './templates/imgCard.hbs';
@@ -22,6 +26,7 @@ window.onscroll = toTopBtnShow;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.topBtn.addEventListener('click', goToTop);
+refs.submit.addEventListener('mousedown', stopBlur);
 
 refs.input.onfocus = addHeaderTransform;
 refs.input.onblur = removeHeaderTransform;

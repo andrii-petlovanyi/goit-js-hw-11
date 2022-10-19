@@ -7,3 +7,7 @@ export function addHeaderTransform() {
 export function removeHeaderTransform() {
   refs.header.classList.remove('header--transform');
 }
+
+export function stopBlur(e) {
+  e.preventDefault();
+}
