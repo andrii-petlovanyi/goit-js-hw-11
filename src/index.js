@@ -7,7 +7,7 @@ import {
   removeHeaderTransform,
   stopBlur,
 } from './modules/animation';
-import { smoothScrollPage, goToTop, toTopBtnShow } from './modules/scrollToTop';
+import { goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
 import ImgCard from './templates/imgCard.hbs';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -53,8 +53,8 @@ async function getData(check = 0) {
 
     if (check === 1) {
       await renderFirst(data.hits);
-      totalCount(data);
       await checkHighAutoScroll();
+      totalCount(data);
     } else {
       isEndList(data);
       await renderMore(data.hits);
@@ -68,7 +68,6 @@ async function getData(check = 0) {
 async function renderMore(res = {}) {
   let markup = await ImgCard(res);
   refs.gallery.insertAdjacentHTML('beforeend', markup);
-  smoothScrollPage();
   lightBox.refresh();
   // console.log(lightBox);
 }
