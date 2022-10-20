@@ -1,5 +1,7 @@
 import ApiService from './api/fetchSearchApi';
+import SimpleLightbox from 'simplelightbox';
 import refs from './modules/refs';
+import 'lazysizes';
 import {
   addHeaderTransform,
   removeHeaderTransform,
@@ -9,14 +11,15 @@ import { smoothScrollPage, goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
 import ImgCard from './templates/imgCard.hbs';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import SimpleLightbox from 'simplelightbox';
 
 export const API = new ApiService();
-const lightBox = new SimpleLightbox('.gallery a', {
+
+let lightBox = new SimpleLightbox('.gallery a', {
   loop: true,
   enableKeyboard: true,
   docClose: true,
 });
+
 export const scrollCheker = {
   isStopScroll: false,
   idDelayScrollCheker: 0,
@@ -61,17 +64,19 @@ async function getData(check = 0) {
     console.log(error);
   }
 }
+
 async function renderMore(res = {}) {
   let markup = await ImgCard(res);
   refs.gallery.insertAdjacentHTML('beforeend', markup);
   smoothScrollPage();
   lightBox.refresh();
+  // console.log(lightBox);
 }
 
 async function renderFirst(res = {}) {
   if (res.length < 40 && res.length > 0) scrollCheker.isStopScroll = true;
   let markup = await ImgCard(res);
-  refs.gallery.innerHTML += markup;
+  refs.gallery.innerHTML = markup;
   lightBox.refresh();
 }
 
@@ -82,7 +87,6 @@ export async function onGetMore() {
     API.page = loadedPage;
     return;
   }
-
   await getData();
 }
 
@@ -102,11 +106,12 @@ async function checkHighAutoScroll() {
       : window.pageYOffset;
   if (
     pageYOffset + window.innerHeight + 1 >= scrollHeight &&
-    !scrollCheker.isStopScroll
+    !scrollCheker.isStopScroll &&
+    !lightBox.isOpen
   ) {
     clearTimeout(scrollCheker.idDelayScrollCheker);
     await onGetMore();
   } else {
-    scrollCheker.idDelayScrollCheker = setTimeout(checkHighAutoScroll, 2000);
+    scrollCheker.idDelayScrollCheker = setTimeout(checkHighAutoScroll, 1);
   }
 }

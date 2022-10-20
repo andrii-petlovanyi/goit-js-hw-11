@@ -10,7 +10,9 @@ export function errorNotFound() {
 }
 
 export function totalCount(data = {}) {
-  if (data.hits.length) {
+  if (data.totalHits === 500) {
+    Notiflix.Notify.info(`Hooray! We found ${data.totalHits + 20} images.`);
+  } else if (data.totalHits > 0 && data.totalHits < 500) {
     Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
   }
 }

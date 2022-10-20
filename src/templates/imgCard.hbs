@@ -1,8 +1,7 @@
 {{#each this}}
-        <div class="photo-card">
             <a class="photo-card__img" href="{{largeImageURL}}">
-                <img src="{{webformatURL}}" alt="{{tags}}" loading="lazy" width="300" height="180" />
-            </a>
+            <div class="photo-card">
+                <img class="lazyload" data-src="{{webformatURL}}" src="{{previewURL}}" alt="{{tags}}" width="300" height="180" />
             <ul class="photo-card__item">
                 <li class="photo-card__info">
                     <p class="photo-card__icon likes"></p>
@@ -22,4 +21,5 @@
                 </li>
             </ul>
         </div>
+            </a>
 {{/each}}
