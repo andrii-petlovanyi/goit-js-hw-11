@@ -202,6 +202,10 @@ body {
   position: relative;
   overflow: hidden;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   @media screen and (min-width: 960px) {
     &:hover .photo-card__item {
       bottom: 0;
@@ -224,6 +228,10 @@ body {
     rgba(221, 221, 221, 0.75) 7.59%,
     rgba(221, 221, 221, 0.8) 102.04%
   );
+
+  &:hover {
+    cursor: default;
+  }
 
   @media screen and (min-width: 960px) {
     position: absolute;

@@ -1,24 +1,13 @@
 import ApiService from './api/fetchSearchApi';
-import SimpleLightbox from 'simplelightbox';
 import refs from './modules/refs';
 import 'lazysizes';
-import {
-  addHeaderTransform,
-  removeHeaderTransform,
-  stopBlur,
-} from './modules/animation';
+import { addHeaderTransform, removeHeaderTransform } from './modules/animation';
 import { goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
+import { galleryHandler } from './modules/gallery';
 import ImgCard from './templates/imgCard.hbs';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 
 export const API = new ApiService();
-
-let lightBox = new SimpleLightbox('.gallery a', {
-  loop: true,
-  enableKeyboard: true,
-  docClose: true,
-});
 
 export const scrollCheker = {
   isStopScroll: false,
@@ -29,7 +18,9 @@ window.onscroll = toTopBtnShow;
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.topBtn.addEventListener('click', goToTop);
-refs.submit.addEventListener('mousedown', stopBlur);
+refs.submit.addEventListener('focus', onSubmit);
+
+refs.gallery.addEventListener('click', galleryHandler);
 
 refs.input.onfocus = addHeaderTransform;
 refs.input.onblur = removeHeaderTransform;
@@ -37,6 +28,7 @@ refs.input.onblur = removeHeaderTransform;
 async function onSubmit(e) {
   e.preventDefault();
   refs.gallery.innerHTML = '';
+  refs.input.blur();
   API.resetPage();
   scrollCheker.isStopScroll = false;
   clearTimeout(scrollCheker.idDelayScrollCheker);
@@ -68,15 +60,12 @@ async function getData(check = 0) {
 async function renderMore(res = {}) {
   let markup = await ImgCard(res);
   refs.gallery.insertAdjacentHTML('beforeend', markup);
-  lightBox.refresh();
-  // console.log(lightBox);
 }
 
 async function renderFirst(res = {}) {
   if (res.length < 40 && res.length > 0) scrollCheker.isStopScroll = true;
   let markup = await ImgCard(res);
   refs.gallery.innerHTML = markup;
-  lightBox.refresh();
 }
 
 export async function onGetMore() {
@@ -105,8 +94,7 @@ async function checkHighAutoScroll() {
       : window.pageYOffset;
   if (
     pageYOffset + window.innerHeight + 1 >= scrollHeight &&
-    !scrollCheker.isStopScroll &&
-    !lightBox.isOpen
+    !scrollCheker.isStopScroll
   ) {
     clearTimeout(scrollCheker.idDelayScrollCheker);
     await onGetMore();
