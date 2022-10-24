@@ -1,17 +1,17 @@
 export function throttle(callback, delay) {
-  let isWayting = false;
+  let isWaiting = false;
   let savedArgs = null;
   let savedThis = null;
   return function wrapper(...args) {
-    if (isWayting) {
+    if (isWaiting) {
       savedArgs = args;
       savedThis = this;
       return;
     }
     callback.apply(this, args);
-    isWayting = true;
+    isWaiting = true;
     setTimeout(() => {
-      isWayting = false;
+      isWaiting = false;
       if (savedThis) {
         wrapper.apply(savedThis, savedArgs);
         savedThis = null;

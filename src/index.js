@@ -16,6 +16,7 @@ export const scrollChecker = {
 };
 
 window.onscroll = toTopBtnShow;
+
 window.addEventListener('scroll', throttle(checkingRunInfinityScroll, 250));
 window.addEventListener('resize', throttle(checkingRunInfinityScroll, 250));
 
