@@ -28,7 +28,7 @@ export function isEndList(totalHits = 0) {
     scrollChecker.isStopScroll = true;
     return showNotification(
       notification.messages.endList,
-      notification.types.fail
+      notification.types.info
     );
   }
 }
