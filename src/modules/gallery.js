@@ -75,10 +75,15 @@ export function createMarkupModal(prevImg = '', fullImg = '', ind, len) {
     .addEventListener('click', handlerRemoveMarkup);
   refs.modalImg.querySelector('.next').addEventListener('click', nextHandler);
   refs.modalImg.querySelector('.prev').addEventListener('click', prevHandler);
+  window.addEventListener('keydown', handlerKeydown);
 }
 
 export function handlerRemoveMarkup(e) {
   if (e.target.tagName === 'BUTTON') return;
+  removeMarkup();
+}
+
+export function removeMarkup() {
   document
     .querySelector('.modal')
     .removeEventListener('click', handlerRemoveMarkup);
@@ -89,4 +94,12 @@ export function handlerRemoveMarkup(e) {
     .querySelector('.prev')
     .removeEventListener('click', prevHandler);
   document.querySelector('.modal').remove();
+  window.removeEventListener('keydown', handlerKeydown);
+}
+
+function handlerKeydown(e) {
+  if (e.code == 'Escape') removeMarkup();
+  // if (e.code == 'ArrowRight') nextHandler(e);
+  // if (e.code == 'ArrowLeft') prevHandler(e);
+  console.log(e);
 }
