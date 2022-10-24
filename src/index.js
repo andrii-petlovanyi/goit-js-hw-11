@@ -5,6 +5,7 @@ import { addHeaderTransform, removeHeaderTransform } from './modules/animation';
 import { goToTop, toTopBtnShow } from './modules/scrollToTop';
 import { errorNotFound, totalCount, isEndList } from './modules/notification';
 import { modalHandler } from './modules/gallery';
+import { throttle } from './modules/throttle';
 import ImgCard from './templates/imgCard.hbs';
 
 export const API = new ApiService();
@@ -15,6 +16,8 @@ export const scrollChecker = {
 };
 
 window.onscroll = toTopBtnShow;
+window.addEventListener('scroll', throttle(checkingRunInfinityScroll, 250));
+window.addEventListener('resize', throttle(checkingRunInfinityScroll, 250));
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.submitBtn.addEventListener('focus', onSubmit);
@@ -88,10 +91,5 @@ async function checkingRunInfinityScroll() {
     clearTimeout(scrollChecker.idDelayScrollChecker);
     API.incrementPage();
     await getResultSearching();
-  } else {
-    scrollChecker.idDelayScrollChecker = setTimeout(
-      checkingRunInfinityScroll,
-      1
-    );
   }
 }
