@@ -1,5 +1,7 @@
 import refs from './refs';
 
+export let currentIndexImg = 0;
+
 export function modalHandler(e) {
   if (e.target.tagName !== 'IMG') return;
 
@@ -8,43 +10,36 @@ export function modalHandler(e) {
 
   const imgList = getImgList();
   let ind = imgList.findIndex(elem => elem.big === fullImg);
-  ind += 1;
 
-  createMarkupModal(prevImg, fullImg, ind, imgList.length);
+  currentIndexImg = ind;
+
+  createMarkupModal(prevImg, fullImg, ind + 1, imgList.length);
 }
 
-export function nextHandler(e) {
+export function nextHandler() {
   refs.modalImg
     .querySelector('.next')
     .removeEventListener('click', nextHandler);
 
-  const img = e.target.parentNode.querySelector('img');
-
-  const el = img.dataset.src;
+  currentIndexImg += 1;
   const imgList = getImgList();
-  let ind = imgList.findIndex(elem => elem.big === el);
-  ind += 1;
-  if (ind >= imgList.length) return;
-  const prevImg = imgList[ind].src;
-  const fullImg = imgList[ind].big;
-  createMarkupModal(prevImg, fullImg, ind + 1, imgList.length);
+  if (currentIndexImg >= imgList.length) return;
+  const prevImg = imgList[currentIndexImg].src;
+  const fullImg = imgList[currentIndexImg].big;
+  createMarkupModal(prevImg, fullImg, currentIndexImg + 1, imgList.length);
 }
 
-export function prevHandler(e) {
+export function prevHandler() {
   refs.modalImg
     .querySelector('.next')
     .removeEventListener('click', prevHandler);
 
-  const img = e.target.parentNode.querySelector('img');
-
-  const el = img.dataset.src;
+  currentIndexImg -= 1;
   const imgList = getImgList();
-  let ind = imgList.findIndex(elem => elem.big === el);
-  ind -= 1;
-  if (ind < 0) return;
-  const prevImg = imgList[ind].src;
-  const fullImg = imgList[ind].big;
-  createMarkupModal(prevImg, fullImg, ind + 1, imgList.length);
+  if (currentIndexImg < 0) return;
+  const prevImg = imgList[currentIndexImg].src;
+  const fullImg = imgList[currentIndexImg].big;
+  createMarkupModal(prevImg, fullImg, currentIndexImg + 1, imgList.length);
 }
 
 export function getImgList() {
@@ -81,6 +76,7 @@ export function createMarkupModal(prevImg = '', fullImg = '', ind, len) {
 export function handlerRemoveMarkup(e) {
   if (e.target.tagName === 'BUTTON') return;
   removeMarkup();
+  currentIndexImg = 0;
 }
 
 export function removeMarkup() {
@@ -99,7 +95,7 @@ export function removeMarkup() {
 
 function handlerKeydown(e) {
   if (e.code == 'Escape') removeMarkup();
-  // if (e.code == 'ArrowRight') nextHandler(e);
-  // if (e.code == 'ArrowLeft') prevHandler(e);
-  console.log(e);
+  if (e.code == 'ArrowRight') nextHandler();
+  if (e.code == 'ArrowLeft') prevHandler();
+  // console.log(e);
 }
