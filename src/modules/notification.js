@@ -1,4 +1,4 @@
-import Notiflix, { Notify } from 'notiflix';
+import { Notify } from 'notiflix';
 import { API, scrollChecker } from '../index';
 import refs from './refs';
 

@@ -95,9 +95,3 @@ async function checkingRunInfinityScroll() {
     );
   }
 }
-
-// let isPromise = false;
-// if (!isPromise) {
-//   isPromise = true;
-//   apiService.getItems().finally(() => (isPromise = false));
-// }
