@@ -12,13 +12,13 @@ export const API = new ApiService();
 
 export const scrollChecker = {
   isStopScroll: false,
-  idDelayScrollChecker: 0,
+  inProgress: false,
 };
 
 window.onscroll = toTopBtnShow;
 
 window.addEventListener('scroll', throttle(checkingRunInfinityScroll, 250));
-window.addEventListener('resize', throttle(checkingRunInfinityScroll, 250));
+// window.addEventListener('resize', throttle(checkingRunInfinityScroll, 250));
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.submitBtn.addEventListener('focus', onSubmit);
@@ -87,10 +87,13 @@ async function checkingRunInfinityScroll() {
       : window.pageYOffset;
   if (
     pageYOffset + window.innerHeight + 1 >= scrollHeight &&
-    !scrollChecker.isStopScroll
+    !scrollChecker.isStopScroll &&
+    !scrollChecker.inProgress
   ) {
-    clearTimeout(scrollChecker.idDelayScrollChecker);
+    scrollChecker.inProgress = true;
     API.incrementPage();
-    await getResultSearching();
+    await getResultSearching().finally(() => {
+      scrollChecker.inProgress = false;
+    });
   }
 }
