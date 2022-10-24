@@ -1,29 +1,48 @@
-import Notiflix from 'notiflix';
-import { API, scrollCheker } from '../index';
+import Notiflix, { Notify } from 'notiflix';
+import { API, scrollChecker } from '../index';
 import refs from './refs';
 
 export function errorNotFound() {
   refs.gallery.innerHTML = '';
-  Notiflix.Notify.failure(
-    'Sorry, there are no images matching your search query. Please try again.'
-  );
+  showNotification(notification.messages.noResults, notification.types.fail);
 }
 
-export function totalCount(data = {}) {
-  if (data.totalHits === 500) {
-    Notiflix.Notify.info(`Hooray! We found ${data.totalHits + 20} images.`);
-  } else if (data.totalHits > 0 && data.totalHits < 500) {
-    Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images.`);
-  }
-}
-
-export function isEndList(data = {}) {
-  let currentPage = API.page;
-  let totalPage = Math.ceil(data.totalHits / 40);
-  if (totalPage === currentPage) {
-    scrollCheker.isStopScroll = true;
-    return Notiflix.Notify.info(
-      'We`re sorry, but you`ve reached the end of search results.'
+export function totalCount(totalHits = 0) {
+  if (totalHits === 500) {
+    showNotification(
+      notification.messages.foundAll(totalHits),
+      notification.types.info
+    );
+  } else if (totalHits > 0 && totalHits < 500) {
+    showNotification(
+      notification.messages.found(totalHits),
+      notification.types.info
     );
   }
+}
+
+export function isEndList(totalHits = 0) {
+  let currentPage = API.page;
+  let totalPage = Math.ceil(totalHits / 40);
+  if (totalPage === currentPage) {
+    scrollChecker.isStopScroll = true;
+    return showNotification(
+      notification.messages.endList,
+      notification.types.fail
+    );
+  }
+}
+
+export const notification = {
+  types: { fail: 'failure', info: 'info' },
+  messages: {
+    foundAll: total => `Hooray! We found ${total + 20} images.`,
+    found: total => `Hooray! We found ${total} images.`,
+    noResults: `Sorry, there are no images matching your search query. Please try again.`,
+    endList: `We're sorry, but you've reached the end of search results.`,
+  },
+};
+
+export function showNotification(message = '', type = 'info', timeout = 5000) {
+  Notify[type](message, { timeout });
 }

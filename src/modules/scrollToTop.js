@@ -6,7 +6,7 @@ export function goToTop() {
 }
 
 export function toTopBtnShow() {
-  refs.topBtn.style.display =
+  refs.toTopBtn.style.display =
     document.body.scrollTop > 20 || document.documentElement.scrollTop > 20
       ? 'flex'
       : 'none';

@@ -73,18 +73,57 @@
   }
 }
 
+.modal .close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  border-radius: 50%;
+  background-color: #70707299;
+  background-size: 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Crect width='100%25' height='100%25' fill='none'/%3E%3Cg class='currentLayer'%3E%3Cpath d='M9.156 6.313 6.312 9.155 22.157 25 6.22 40.969 9.03 43.78 25 27.844 40.938 43.78l2.843-2.843L27.844 25 43.687 9.156l-2.843-2.844L25 22.157Z' class='selected' fill='%23d2d2d2'/%3E%3C/g%3E%3C/svg%3E");
+  color: #d2d2d2;
+  z-index: 12;
+
+  @media screen and(min-width: 480px) {
+    right: 15px;
+    top: 15px;
+  }
+
+  @media screen and(min-width: 700px) {
+    right: 20px;
+    top: 20px;
+  }
+
+  @media screen and(min-width: 900px) {
+    background-size: 17px;
+    width: 35px;
+    height: 35px;
+    right: 25px;
+    top: 25px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    right: 30px;
+    top: 30px;
+  }
+}
+
 .modal .next {
   position: absolute;
   top: 50%;
   right: 20px;
+  width: 30px;
+  height: 45px;
+  background-size: 20px;
   border-radius: 10px;
   color: #e2e2e2;
-
   transform: translate(0, -50%);
-  width: 50px;
-  height: 70px;
   background-color: #70707299;
-  background-size: 30px;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 330.002 330.002' style='fill: %23e2e2e2; enable-background:new 0 0 320.002 330.002' xml:space='preserve'%3E%3Cpath d='M233.252 155.997 120.752 6.001c-4.972-6.628-14.372-7.97-21-3-6.628 4.971-7.971 14.373-3 21l105.75 140.997-105.75 141.003c-4.971 6.627-3.627 16.03 3 21a14.93 14.93 0 0 0 8.988 3.001c4.561 0 9.065-2.072 12.012-6.001l112.5-150.004a15 15 0 0 0 0-18z'/%3E%3C/svg%3E");
@@ -92,32 +131,37 @@
   box-shadow: none;
   z-index: 12;
 
+  @media screen and(min-width: 400px) {
+    background-size: 25px;
+    width: 35px;
+    height: 55px;
+  }
   @media screen and(min-width: 480px) {
     right: 25px;
     background-size: 35px;
-    width: 55px;
-    height: 85px;
+    width: 45px;
+    height: 65px;
   }
 
   @media screen and(min-width: 700px) {
     right: 30px;
-    background-size: 40px;
-    width: 60px;
-    height: 100px;
+    background-size: 35px;
+    width: 55px;
+    height: 70px;
   }
 
   @media screen and(min-width: 900px) {
     right: 40px;
-    background-size: 45px;
-    width: 65px;
-    height: 120px;
+    background-size: 37px;
+    width: 60px;
+    height: 90px;
   }
 
   @media screen and (min-width: 1200px) {
     right: 70px;
-    background-size: 60px;
-    width: 80px;
-    height: 150px;
+    background-size: 40px;
+    width: 65px;
+    height: 100px;
   }
 }
 
@@ -125,52 +169,59 @@
   position: absolute;
   top: 50%;
   left: 20px;
+  width: 30px;
+  height: 45px;
+  background-size: 20px;
   border-radius: 10px;
   color: #e2e2e2;
   background-color: #70707299;
-  background-size: 30px;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url("data:image/svg+xml,%3Csvg width='330.002' height='330.002' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='none' d='M-1-1h582v402H-1z'/%3E%3Cg%3E%3Cpath fill='%23e2e2e2' d='m96.75 175.005 112.5 149.996c4.972 6.628 14.372 7.97 21 3 6.628-4.971 7.971-14.373 3-21L127.5 166.004 233.25 25.001c4.971-6.627 3.627-16.03-3-21A14.93 14.93 0 0 0 221.262 1a14.978 14.978 0 0 0-12.012 6.001L96.75 157.005a15 15 0 0 0 0 18z'/%3E%3C/g%3E%3C/svg%3E");
   transform: translate(0, -50%);
   transform: rotateY(180deg);
-  width: 50px;
-  height: 70px;
   border: none;
   box-shadow: none;
   z-index: 12;
 
+  @media screen and(min-width: 400px) {
+    background-size: 25px;
+    width: 35px;
+    height: 55px;
+  }
+
   @media screen and(min-width: 480px) {
-    left: 25px;
+    left: 30px;
     background-size: 35px;
-    width: 55px;
-    height: 85px;
+    width: 45px;
+    height: 65px;
   }
 
   @media screen and(min-width: 700px) {
     left: 30px;
-    background-size: 40px;
-    width: 60px;
-    height: 100px;
+    background-size: 35px;
+    width: 55px;
+    height: 70px;
   }
 
   @media screen and(min-width: 900px) {
     left: 40px;
-    background-size: 45px;
-    width: 65px;
-    height: 120px;
+    background-size: 37px;
+    width: 60px;
+    height: 90px;
   }
 
   @media screen and (min-width: 1200px) {
     left: 70px;
-    background-size: 60px;
-    width: 80px;
-    height: 150px;
+    background-size: 40px;
+    width: 65px;
+    height: 100px;
   }
 }
 
 .modal .prev,
-.modal .next {
+.modal .next,
+.modal .close {
   &:hover {
     cursor: pointer;
   }

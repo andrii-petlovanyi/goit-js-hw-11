@@ -1,6 +1,6 @@
 import refs from './refs';
 
-export function galleryHandler(e) {
+export function modalHandler(e) {
   if (e.target.tagName !== 'IMG') return;
 
   const prevImg = e.target.dataset.src;
@@ -10,11 +10,13 @@ export function galleryHandler(e) {
   let ind = imgList.findIndex(elem => elem.big === fullImg);
   ind += 1;
 
-  createMarkupGallery(prevImg, fullImg, ind, imgList.length);
+  createMarkupModal(prevImg, fullImg, ind, imgList.length);
 }
 
 export function nextHandler(e) {
-  refs.mod.querySelector('.next').removeEventListener('click', nextHandler);
+  refs.modalImg
+    .querySelector('.next')
+    .removeEventListener('click', nextHandler);
 
   const img = e.target.parentNode.querySelector('img');
 
@@ -25,11 +27,13 @@ export function nextHandler(e) {
   if (ind >= imgList.length) return;
   const prevImg = imgList[ind].src;
   const fullImg = imgList[ind].big;
-  createMarkupGallery(prevImg, fullImg, ind + 1, imgList.length);
+  createMarkupModal(prevImg, fullImg, ind + 1, imgList.length);
 }
 
 export function prevHandler(e) {
-  refs.mod.querySelector('.next').removeEventListener('click', prevHandler);
+  refs.modalImg
+    .querySelector('.next')
+    .removeEventListener('click', prevHandler);
 
   const img = e.target.parentNode.querySelector('img');
 
@@ -40,7 +44,7 @@ export function prevHandler(e) {
   if (ind < 0) return;
   const prevImg = imgList[ind].src;
   const fullImg = imgList[ind].big;
-  createMarkupGallery(prevImg, fullImg, ind + 1, imgList.length);
+  createMarkupModal(prevImg, fullImg, ind + 1, imgList.length);
 }
 
 export function getImgList() {
@@ -50,12 +54,13 @@ export function getImgList() {
   return newArr;
 }
 
-export function createMarkupGallery(prevImg = '', fullImg = '', ind, len) {
+export function createMarkupModal(prevImg = '', fullImg = '', ind, len) {
   const markup = `
     <div class="modal">
       <div class="container">
       <button class='prev' type="button" data-set="prev"></button>
       <button class='next' type="button" data-set="next"></button>
+      <p class='close'></p>
       <p class="counter">${ind}/${len}</p>
       <div class="wrap">
           <img class="lazyload" data-src=${fullImg} src=${prevImg}></img>
@@ -64,12 +69,12 @@ export function createMarkupGallery(prevImg = '', fullImg = '', ind, len) {
     </div>
   `;
 
-  refs.mod.innerHTML = markup;
+  refs.modalImg.innerHTML = markup;
   document
     .querySelector('.modal')
     .addEventListener('click', handlerRemoveMarkup);
-  refs.mod.querySelector('.next').addEventListener('click', nextHandler);
-  refs.mod.querySelector('.prev').addEventListener('click', prevHandler);
+  refs.modalImg.querySelector('.next').addEventListener('click', nextHandler);
+  refs.modalImg.querySelector('.prev').addEventListener('click', prevHandler);
 }
 
 export function handlerRemoveMarkup(e) {
@@ -77,7 +82,11 @@ export function handlerRemoveMarkup(e) {
   document
     .querySelector('.modal')
     .removeEventListener('click', handlerRemoveMarkup);
-  refs.mod.querySelector('.next').removeEventListener('click', nextHandler);
-  refs.mod.querySelector('.prev').removeEventListener('click', prevHandler);
+  refs.modalImg
+    .querySelector('.next')
+    .removeEventListener('click', nextHandler);
+  refs.modalImg
+    .querySelector('.prev')
+    .removeEventListener('click', prevHandler);
   document.querySelector('.modal').remove();
 }
