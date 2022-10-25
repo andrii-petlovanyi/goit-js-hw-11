@@ -9,7 +9,7 @@
     <script type="module" src="./index.js"></script>
   </head>
   <body>
-    <header class="header">
+    <header class="header header-js">
       <form class="search-form" id="search-form">
         <label class="search__label">
           <input
@@ -18,7 +18,7 @@
             autocomplete="off"
             placeholder="Search images..."
           />
-          <button class="submit" type="submit">
+          <button class="submit submit-js" type="submit">
             <svg class="submit__icon" width="24" height="24">
               <use href="./images/sprite.svg#icon-search"></use>
             </svg>
@@ -27,13 +27,13 @@
       </form>
     </header>
     <main class="main">
-      <div class="gallery container" id="scroll">
+      <div class="gallery gallery-js container" id="scroll">
         <!-- Картки зображень -->
       </div>
-      <span class="loader hidden"></span>
-      <div class="mod"></div>
+      <span class="loader loader-js hidden"></span>
+      <div class="mod mod-js"></div>
     </main>
-    <button class="top-btn" title="Go to top">
+    <button class="top-btn top-btn-js" title="Go to top">
       <svg class="top-btn__icon" width="24" height="24">
         <use href="./images/sprite.svg#icon-top"></use>
       </svg>
