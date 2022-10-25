@@ -4,6 +4,7 @@ import refs from './refs';
 
 export function errorNotFound() {
   refs.gallery.innerHTML = '';
+  scrollChecker.isStopScroll = true;
   showNotification(notification.messages.noResults, notification.types.fail);
 }
 

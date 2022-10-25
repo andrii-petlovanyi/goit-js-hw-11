@@ -18,7 +18,7 @@ export const scrollChecker = {
 window.onscroll = toTopBtnShow;
 
 window.addEventListener('scroll', throttle(checkingRunInfinityScroll, 250));
-// window.addEventListener('resize', throttle(checkingRunInfinityScroll, 250));
+window.addEventListener('resize', throttle(checkingRunInfinityScroll, 250));
 
 refs.formSubmit.addEventListener('submit', onSubmit);
 refs.submitBtn.addEventListener('focus', onSubmit);
@@ -34,7 +34,6 @@ async function onSubmit(e) {
   refs.input.blur();
   API.resetPage();
   scrollChecker.isStopScroll = false;
-  clearTimeout(scrollChecker.idDelayScrollChecker);
   await getResultSearching(1);
 }
 
@@ -91,9 +90,11 @@ async function checkingRunInfinityScroll() {
     !scrollChecker.inProgress
   ) {
     scrollChecker.inProgress = true;
+    refs.loader.classList.remove('hidden');
     API.incrementPage();
     await getResultSearching().finally(() => {
       scrollChecker.inProgress = false;
+      refs.loader.classList.add('hidden');
     });
   }
 }

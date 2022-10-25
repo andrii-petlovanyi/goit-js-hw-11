@@ -6,6 +6,7 @@ const refs = {
   header: document.querySelector('.header'),
   submitBtn: document.querySelector('.submit'),
   modalImg: document.querySelector('.mod'),
+  loader: document.querySelector('.loader'),
 };
 
 export default refs;
