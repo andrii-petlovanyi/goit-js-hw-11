@@ -15,6 +15,7 @@ export function modalHandler(e) {
 
   createMarkupModal(prevImg, fullImg, ind + 1, imgList.length);
   createHandlers();
+  checkingBtnHiding(currentIndexImg);
 }
 
 export function nextHandler() {
@@ -32,6 +33,7 @@ export function nextHandler() {
   const fullImg = imgList[currentIndexImg].big;
   createMarkupModal(prevImg, fullImg, currentIndexImg + 1, imgList.length);
   createHandlers();
+  checkingBtnHiding(currentIndexImg);
 }
 
 export function prevHandler() {
@@ -49,6 +51,7 @@ export function prevHandler() {
   const fullImg = imgList[currentIndexImg].big;
   createMarkupModal(prevImg, fullImg, currentIndexImg + 1, imgList.length);
   createHandlers();
+  checkingBtnHiding(currentIndexImg);
 }
 
 export function getImgList() {
@@ -112,4 +115,12 @@ export function handlerKeyDown(e) {
   if (e.code == 'ArrowRight') nextHandler();
   if (e.code == 'ArrowLeft') prevHandler();
   // console.log(e);
+}
+
+function checkingBtnHiding(id) {
+  const arr = getImgList();
+  if (id === 0) refs.modalImg.querySelector('.prev').classList.add('hidden');
+
+  if (id === arr.length - 1)
+    refs.modalImg.querySelector('.next').classList.add('hidden');
 }
